@@ -1,77 +1,92 @@
 package com.example.a00_tp_android
 
+import android.icu.text.DateFormat
 import androidx.room.*
 import java.io.Serializable
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 @Entity
-data class CacheRequeteRecherche(@PrimaryKey(autoGenerate = true) var id               : Long? = null,
-                                                                  var chaineRecherchee : String,
-                                                                  var dateRequete      : Date
-                                                                  ) : Serializable
+data class CacheRequete(@PrimaryKey(autoGenerate = true) var id               : Long? = null,
+                                                         var chaineRecherchee : String/*,
+                                                         var dateRequete      : Date*/
+                                                         ) : Serializable
 {
-
+    override fun toString() : String
+    {
+        //return "CacheRequete(id=$id, chaineRecherchee='$chaineRecherchee', dateRequete=$dateRequete)"
+        return "CacheRequete(id=$id, chaineRecherchee='$chaineRecherchee')"
+    }
 }
 
 
 @Dao
-interface CacheRequeteRechercheDAO
+interface CacheRequeteDAO
 {
-    @Query("SELECT * FROM Entreprise ORDER BY raisonSociale")
-    fun getAll() : List<Entreprise>
+    @Query("SELECT * FROM CacheRequete ORDER BY chaineRecherchee")
+    fun getAll() : List<CacheRequete>
 
-    @Query("SELECT * FROM Entreprise WHERE siret=:numSiret")
-    fun getById(numSiret : Long?) : Entreprise?
+    @Query("SELECT * FROM CacheRequete WHERE id=:idRequete")
+    fun getById(idRequete : Long?) : CacheRequete?
 
-    @Query("SELECT * FROM Entreprise ORDER BY Entreprise.raisonSociale LIMIT 1 OFFSET :position")
-    fun getByPosition(position : Int) : Entreprise
+    @Query("SELECT * FROM CacheRequete WHERE chaineRecherchee LIKE :chaine")
+    fun getByChaineRecherchee(chaine : String) : CacheRequete?
 
-    @Query("SELECT COUNT(*) FROM Entreprise")
+    @Query("SELECT COUNT(*) FROM CacheRequete")
     fun count() : Int
 
     @Insert
-    fun insert(cacheRequete : CacheRequeteRecherche) : Long
+    fun insert(cacheRequete : CacheRequete) : Long
 
     @Update
-    fun update(cacheRequete : CacheRequeteRecherche)
+    fun update(cacheRequete : CacheRequete)
 
     @Delete
-    fun delete(cacheRequete : CacheRequeteRecherche)
+    fun delete(cacheRequete : CacheRequete)
 }
 
-
-@Entity
-data class CacheRequeteEntrepriseRecherchee(@PrimaryKey(autoGenerate = true) var id          : Long? = null,
-                                                                             var idRecherche : Long,
-                                                                             var siret       : String
-                                                                             ) : Serializable
+@Entity(foreignKeys = [ForeignKey(entity        = CacheRequete::class,
+                                  parentColumns = ["id"],
+                                  childColumns  = ["idRecherche"],
+                                  onDelete      = ForeignKey.CASCADE),
+                       ForeignKey(entity        = Entreprise::class,
+                                  parentColumns = ["siret"],
+                                  childColumns  = ["siret"],
+                                  onDelete      = ForeignKey.CASCADE)])
+data class CacheRequeteEntreprise(@PrimaryKey(autoGenerate = true) var id          : Long? = null,
+                                                                   var idRecherche : Long,
+                                                                   var siret       : Long
+                                                                   ) : Serializable
 {
-
+    override fun toString() : String
+    {
+        return "CacheRequeteEntreprise(id=$id, idRecherche=$idRecherche, siret='$siret')"
+    }
 }
 
 
 @Dao
-interface CacheRequeteEntrepriseRechercheeDAO
+interface CacheRequeteEntrepriseDAO
 {
-    @Query("SELECT * FROM Entreprise ORDER BY raisonSociale")
-    fun getAll() : List<Entreprise>
+    @Query("SELECT * FROM CacheRequeteEntreprise ORDER BY idRecherche")
+    fun getAll() : List<CacheRequeteEntreprise>
 
-    @Query("SELECT * FROM Entreprise WHERE siret=:numSiret")
-    fun getById(numSiret : Long?) : Entreprise?
+    @Query("SELECT * FROM CacheRequeteEntreprise WHERE idRecherche=:idRequete")
+    fun getById(idRequete: Long?) : CacheRequeteEntreprise?
 
-    @Query("SELECT * FROM Entreprise ORDER BY Entreprise.raisonSociale LIMIT 1 OFFSET :position")
-    fun getByPosition(position : Int) : Entreprise
+    @Query("SELECT * FROM CacheRequeteEntreprise WHERE siret =:siret")
+    fun getBySiret(siret : Long) : CacheRequeteEntreprise?
 
-    @Query("SELECT COUNT(*) FROM Entreprise")
+    @Query("SELECT COUNT(*) FROM CacheRequeteEntreprise")
     fun count() : Int
 
     @Insert
-    fun insert(cacheEntreprise : CacheRequeteEntrepriseRecherchee) : Long
+    fun insert(cacheEntreprise : CacheRequeteEntreprise) : Long
 
     @Update
-    fun update(cacheEntreprise : CacheRequeteEntrepriseRecherchee)
+    fun update(cacheEntreprise : CacheRequeteEntreprise)
 
     @Delete
-    fun delete(cacheEntreprise : CacheRequeteEntrepriseRecherchee)
+    fun delete(cacheEntreprise : CacheRequeteEntreprise)
 }

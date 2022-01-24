@@ -6,10 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [Entreprise::class], version = 1)
+@Database(entities = [Entreprise::class, CacheRequete::class, CacheRequeteEntreprise::class], version = 1)
 abstract class TodoDatabase : RoomDatabase()
 {
     abstract fun entrepriseDAO() : EntrepriseDAO
+    abstract fun cacheRequeteDAO() : CacheRequeteDAO
+    abstract fun cacheRequeteEntrepriseDAO() : CacheRequeteEntrepriseDAO
 
     companion object
     {
