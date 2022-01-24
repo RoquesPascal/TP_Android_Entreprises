@@ -4,6 +4,7 @@ import androidx.room.*
 import java.io.Serializable
 import java.util.*
 
+
 @Entity
 data class Entreprise(@PrimaryKey(autoGenerate = false) var siret              : Long?,   //siret
                                                         var raisonSociale      : String?, //nom_raison_sociale
