@@ -33,6 +33,9 @@ interface CacheRequeteDAO
     @Query("SELECT * FROM CacheRequete WHERE chaineRecherchee LIKE :chaine")
     fun getByChaineRecherchee(chaine : String) : CacheRequete?
 
+    @Query("SELECT CRE.siret FROM CacheRequete AS CR JOIN CacheRequeteEntreprise AS CRE ON CR.id = CRE.idRecherche WHERE CR.chaineRecherchee LIKE :chaine")
+    fun getByRecherche(chaine : String) : List<Long>
+
     @Query("SELECT COUNT(*) FROM CacheRequete")
     fun count() : Int
 

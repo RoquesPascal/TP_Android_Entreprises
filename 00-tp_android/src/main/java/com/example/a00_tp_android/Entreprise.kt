@@ -39,6 +39,9 @@ interface EntrepriseDAO
     @Query("SELECT * FROM Entreprise ORDER BY Entreprise.raisonSociale LIMIT 1 OFFSET :position")
     fun getByPosition(position : Int) : Entreprise
 
+    @Query("SELECT * FROM Entreprise WHERE siret IN (:listeSirets)")
+    fun getByPlusieursSiret(listeSirets : List<Long>) : List<Entreprise>
+
     @Query("SELECT COUNT(*) FROM Entreprise")
     fun count() : Int
 

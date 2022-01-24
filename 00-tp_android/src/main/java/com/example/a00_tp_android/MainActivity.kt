@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity()
         setContentView(R.layout.activity_main)
 
         val entrepriseService = EntrepriseService()
-        val listeEntreprises = findViewById<ListView>(R.id.listLocations)
+        val listViewEntreprises = findViewById<ListView>(R.id.listLocations)
 
         val db = TodoDatabase.getDatabase(this)
         val entrepriseDAO = db.entrepriseDAO()
@@ -33,41 +33,60 @@ class MainActivity : AppCompatActivity()
             Thread(Runnable {
                 runOnUiThread {
                     progressBar.visibility = View.VISIBLE
-                    listeEntreprises.visibility = View.INVISIBLE
+                    listViewEntreprises.visibility = View.INVISIBLE
                 }
-                val idCache = CreerOuChercherCacheRecherche(cacheRequeteDAO, query)
+
+
+                /*val idCache = CreerOuChercherCacheRecherche(cacheRequeteDAO, query)
                 val result = entrepriseService.getEntreprise(query)
-                AssocierEntrepriseACacheRecherche(entrepriseDAO, cacheRequeteEntrepriseDAO, idCache, result)
+                AssocierEntrepriseACacheRecherche(entrepriseDAO, cacheRequeteEntrepriseDAO, idCache, result)*/
+
+                var listeEntreprise : List<Entreprise>? = null
+                var idCache = ChercherCacheRecherche(cacheRequeteDAO, query)
+                if(idCache == null)
+                {
+                    idCache = CreerCacheRecherche(cacheRequeteDAO, query)
+                    listeEntreprise = entrepriseService.getEntreprise(query)
+                }
+                else
+                {
+                    val listeSiret = cacheRequeteDAO.getByRecherche(query)
+                    listeEntreprise = entrepriseDAO.getByPlusieursSiret(listeSiret)
+                }
+                AssocierEntrepriseACacheRecherche(entrepriseDAO, cacheRequeteEntrepriseDAO, idCache, listeEntreprise)
+
                 runOnUiThread {
-                    listeEntreprises.adapter = ArrayAdapter<Entreprise>(applicationContext,
+                    listViewEntreprises.adapter = ArrayAdapter<Entreprise>(applicationContext,
                         android.R.layout.simple_list_item_1,
                         android.R.id.text1,
-                        result)
+                        listeEntreprise)
                     progressBar.visibility = View.INVISIBLE
-                    listeEntreprises.visibility = View.VISIBLE
+                    listViewEntreprises.visibility = View.VISIBLE
                 }
             }).start()
         }
 
-        listeEntreprises.setOnItemClickListener { _, _, position, _ ->
-            val entreprise = listeEntreprises.adapter.getItem(position) as Entreprise
+        listViewEntreprises.setOnItemClickListener { _, _, position, _ ->
+            val entreprise = listViewEntreprises.adapter.getItem(position) as Entreprise
             val intent = Intent(applicationContext, EntrepriseActivity::class.java)
             intent.putExtra("siretEntreprise", entreprise.siret)
             startActivity(intent)
         }
     }
 
-    fun CreerOuChercherCacheRecherche(cacheRequeteDAO : CacheRequeteDAO, query : String) : Long
+    fun ChercherCacheRecherche(cacheRequeteDAO : CacheRequeteDAO, query : String) : Long?
+    {
+        var cache = cacheRequeteDAO.getByChaineRecherchee(query)
+        return cache?.id
+    }
+
+    fun CreerCacheRecherche(cacheRequeteDAO : CacheRequeteDAO, query : String) : Long
     {
         val test1 = Timestamp(System.currentTimeMillis())
         //https://stackoverflow.com/questions/50313525/room-using-date-field
 
-        var cache = cacheRequeteDAO.getByChaineRecherchee(query)
-        if(cache == null)
-        {
-            cacheRequeteDAO.insert(CacheRequete(null, query))
-            cache = cacheRequeteDAO.getByChaineRecherchee(query)
-        }
+        cacheRequeteDAO.insert(CacheRequete(null, query))
+        val cache = cacheRequeteDAO.getByChaineRecherchee(query)
         val testGetAllCacheRequete = cacheRequeteDAO.getAll()
         return cache!!.id!!
     }
