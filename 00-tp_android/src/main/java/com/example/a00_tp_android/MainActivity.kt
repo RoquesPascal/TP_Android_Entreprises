@@ -7,12 +7,6 @@ import android.view.View
 import android.widget.*
 
 
-
-
-
-
-
-
 class MainActivity : AppCompatActivity()
 {
     override fun onCreate(savedInstanceState: Bundle?)
