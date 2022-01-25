@@ -8,15 +8,15 @@ import java.util.*
 
 
 @Entity
-data class CacheRequete(@PrimaryKey(autoGenerate = true) var id               : Long? = null,
-                                                         var chaineRecherchee : String/*,
-                                                         var dateRequete      : Date*/
+data class CacheRequete(@PrimaryKey(autoGenerate = true) var id                 : Long? = null,
+                                                         var chaineRecherchee   : String,
+                                                         var villeOuDepartement : String/*,
+                                                         var dateRequete        : Date*/
                                                          ) : Serializable
 {
     override fun toString() : String
     {
-        //return "CacheRequete(id=$id, chaineRecherchee='$chaineRecherchee', dateRequete=$dateRequete)"
-        return "CacheRequete(id=$id, chaineRecherchee='$chaineRecherchee')"
+        return "CacheRequete(id=$id, chaineRecherchee='$chaineRecherchee', villeOuDepartement='$villeOuDepartement')"
     }
 }
 
@@ -33,8 +33,14 @@ interface CacheRequeteDAO
     @Query("SELECT * FROM CacheRequete WHERE chaineRecherchee LIKE :chaine")
     fun getByChaineRecherchee(chaine : String) : CacheRequete?
 
+    @Query("SELECT * FROM CacheRequete WHERE chaineRecherchee LIKE :chaine AND villeOuDepartement LIKE :chaineVilleCP")
+    fun getByChaineRecherchee(chaine : String, chaineVilleCP : String) : CacheRequete?
+
     @Query("SELECT CRE.siret FROM CacheRequete AS CR JOIN CacheRequeteEntreprise AS CRE ON CR.id = CRE.idRecherche WHERE CR.chaineRecherchee LIKE :chaine")
     fun getByRecherche(chaine : String) : List<Long>
+
+    @Query("SELECT CRE.siret FROM CacheRequete AS CR JOIN CacheRequeteEntreprise AS CRE ON CR.id = CRE.idRecherche WHERE CR.chaineRecherchee LIKE :chaine AND CR.villeOuDepartement LIKE :chaineVilleCP")
+    fun getByRecherche(chaine : String, chaineVilleCP : String) : List<Long>
 
     @Query("SELECT COUNT(*) FROM CacheRequete")
     fun count() : Int

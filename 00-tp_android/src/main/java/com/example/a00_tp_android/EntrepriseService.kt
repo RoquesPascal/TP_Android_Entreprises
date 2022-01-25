@@ -14,11 +14,18 @@ class EntrepriseService
     private val serverUrl = "https://entreprise.data.gouv.fr"
     private val apiUrl = "$serverUrl/api/sirene"
     private val entrepriseUrl = "$apiUrl/v1/full_text/%s"
+    private val villeUrl = "$entrepriseUrl?code_postal=%s"
+    private val departementUrl = "$entrepriseUrl?departement=%s"
 
 
-    fun getEntreprise(query: String): List<Entreprise>
+    fun getEntreprise(queryNom : String, queryVilleDepartement : String) : List<Entreprise>
     {
-        val url = URL(String.format(entrepriseUrl, query))
+        var url : URL? = null
+        if(queryVilleDepartement.isNullOrBlank())  url = URL(String.format(entrepriseUrl, queryNom))
+        else if(queryVilleDepartement.length == 2) url = URL(String.format(departementUrl, queryNom, queryVilleDepartement))
+        else if(queryVilleDepartement.length == 5) url = URL(String.format(villeUrl, queryNom, queryVilleDepartement))
+        else return emptyList()
+
         var conn: HttpsURLConnection? = null
         try
         {

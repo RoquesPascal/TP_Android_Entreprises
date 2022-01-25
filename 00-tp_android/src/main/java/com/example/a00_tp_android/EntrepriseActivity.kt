@@ -19,20 +19,17 @@ class EntrepriseActivity : AppCompatActivity()
         Thread(Runnable {
             runOnUiThread {
                 progressBar.visibility = View.VISIBLE
-                if (siretEntreprise != null)
-                {
-                    val db = TodoDatabase.getDatabase(this)
-                    val entrepriseDAO = db.entrepriseDAO()
-                    val entrepriseDeLaBase = entrepriseDAO.getById(siretEntreprise)
-                    findViewById<TextView>(R.id.TextViewEntrepriseNom)     .setText(entrepriseDeLaBase?.raisonSociale)
-                    findViewById<TextView>(R.id.TextViewSiret)             .setText(entrepriseDeLaBase?.siret.toString())
-                    findViewById<TextView>(R.id.TextViewAdresse)           .setText(entrepriseDeLaBase?.adresse)
-                    findViewById<TextView>(R.id.TextViewActivitePrincipale).setText(entrepriseDeLaBase?.activitePrincipale)
-                    findViewById<TextView>(R.id.TextViewNatureJuridique)   .setText(entrepriseDeLaBase?.natureJuridique)
-                    findViewById<TextView>(R.id.TextViewEmail)             .setText(entrepriseDeLaBase?.email)
-                    findViewById<TextView>(R.id.TextViewDepartement)       .setText(entrepriseDeLaBase?.departement)
-                    progressBar.visibility = View.INVISIBLE
-                }
+                val db = TodoDatabase.getDatabase(this)
+                val entrepriseDAO = db.entrepriseDAO()
+                val entrepriseDeLaBase = entrepriseDAO.getBySiret(siretEntreprise)
+                findViewById<TextView>(R.id.TextViewEntrepriseNom)     .setText(entrepriseDeLaBase?.raisonSociale)
+                findViewById<TextView>(R.id.TextViewSiret)             .setText(entrepriseDeLaBase?.siret.toString())
+                findViewById<TextView>(R.id.TextViewAdresse)           .setText(entrepriseDeLaBase?.adresse)
+                findViewById<TextView>(R.id.TextViewActivitePrincipale).setText(entrepriseDeLaBase?.activitePrincipale)
+                findViewById<TextView>(R.id.TextViewNatureJuridique)   .setText(entrepriseDeLaBase?.natureJuridique)
+                findViewById<TextView>(R.id.TextViewEmail)             .setText(entrepriseDeLaBase?.email)
+                findViewById<TextView>(R.id.TextViewDepartement)       .setText(entrepriseDeLaBase?.departement)
+                progressBar.visibility = View.INVISIBLE
             }
         }).start()
     }
