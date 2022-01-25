@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".FormulaireEntrepriseActivity">
+
     <TextView
         android:id="@+id/TextViewlabelRecherche"
         android:layout_alignParentTop="true"
@@ -14,6 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin"/>
+
     <ImageButton
         android:id="@+id/buttonQuery"
         android:layout_below="@id/TextViewlabelRecherche"
@@ -32,11 +34,11 @@
         android:layout_marginTop="@dimen/margin"
         android:layout_marginEnd="@dimen/margin"
         android:layout_marginBottom="@dimen/margin"
-        android:layout_toStartOf="@id/editQueryCPVille"
+        android:layout_toStartOf="@id/editQueryVilleDepartement"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/editQueryCPVille"
+        android:id="@+id/editQueryVilleDepartement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/TextViewlabelRecherche"
@@ -46,15 +48,18 @@
         android:layout_marginBottom="@dimen/margin"
         android:layout_toStartOf="@id/buttonQuery"
         android:inputType="text" />
+
     <ListView
-        android:id="@+id/listLocations"
+        android:id="@+id/listEntreprises"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/editQuery" />
+
     <ProgressBar
         android:id="@+id/queryProgressBar"
         android:layout_centerInParent="true"
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
 </RelativeLayout>

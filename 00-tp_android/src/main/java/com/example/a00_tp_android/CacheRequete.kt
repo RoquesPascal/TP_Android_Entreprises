@@ -42,6 +42,9 @@ interface CacheRequeteDAO
     @Query("SELECT CRE.siret FROM CacheRequete AS CR JOIN CacheRequeteEntreprise AS CRE ON CR.id = CRE.idRecherche WHERE CR.chaineRecherchee LIKE :chaine AND CR.villeOuDepartement LIKE :chaineVilleCP")
     fun getByRecherche(chaine : String, chaineVilleCP : String) : List<Long>
 
+    @Query("SELECT * FROM CacheRequete ORDER BY CacheRequete.chaineRecherchee LIMIT 1 OFFSET :position")
+    fun getByPosition(position : Int): CacheRequete
+
     @Query("SELECT COUNT(*) FROM CacheRequete")
     fun count() : Int
 
@@ -86,6 +89,9 @@ interface CacheRequeteEntrepriseDAO
 
     @Query("SELECT * FROM CacheRequeteEntreprise WHERE siret =:siret")
     fun getBySiret(siret : Long) : CacheRequeteEntreprise?
+
+    @Query("SELECT E.siret FROM CacheRequete AS CR JOIN CacheRequeteEntreprise AS CRE ON CR.id = CRE.idRecherche JOIN Entreprise AS E ON E.siret = CRE.siret WHERE CR.id = :idCacheRequete")
+    fun getByIdCacheRequete(idCacheRequete : Long) : List<Long>
 
     @Query("SELECT COUNT(*) FROM CacheRequeteEntreprise")
     fun count() : Int

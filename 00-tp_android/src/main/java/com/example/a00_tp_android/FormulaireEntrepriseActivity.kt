@@ -1,14 +1,19 @@
 package com.example.a00_tp_android
 
+import android.app.appsearch.GetSchemaResponse
+import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import java.sql.Timestamp
 
 
-class FormulaireEntreprise : AppCompatActivity()
+class FormulaireEntrepriseActivity : AppCompatActivity()
 {
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -18,7 +23,7 @@ class FormulaireEntreprise : AppCompatActivity()
         else setContentView(R.layout.activity_formulaire_entreprise_ville_departement)
 
         val entrepriseService = EntrepriseService()
-        val listViewEntreprises = findViewById<ListView>(R.id.listLocations)
+        val listViewEntreprises = findViewById<ListView>(R.id.listEntreprises)
 
         val db = TodoDatabase.getDatabase(this)
         val entrepriseDAO = db.entrepriseDAO()
@@ -28,7 +33,7 @@ class FormulaireEntreprise : AppCompatActivity()
         findViewById<ImageButton>(R.id.buttonQuery).setOnClickListener {
             val queryNom = findViewById<EditText>(R.id.editQuery).text.toString()
             var queryVilleDepartement : String = ""
-            if(!rechercheParNomUniquement) queryVilleDepartement = findViewById<EditText>(R.id.editQueryCPVille).text.toString()
+            if(!rechercheParNomUniquement) queryVilleDepartement = findViewById<EditText>(R.id.editQueryVilleDepartement).text.toString()
 
             if(queryNom.isEmpty()) return@setOnClickListener
             val progressBar = findViewById<ProgressBar>(R.id.queryProgressBar)
@@ -73,7 +78,7 @@ class FormulaireEntreprise : AppCompatActivity()
 
     private fun ChercherCacheRecherche(cacheRequeteDAO : CacheRequeteDAO, query : String, queryVilleDepartement : String) : Long?
     {
-        var cache = cacheRequeteDAO.getByChaineRecherchee(query, queryVilleDepartement)
+        val cache = cacheRequeteDAO.getByChaineRecherchee(query, queryVilleDepartement)
         return cache?.id
     }
 
@@ -99,5 +104,21 @@ class FormulaireEntreprise : AppCompatActivity()
 
         val testGetAllEntreprise = entrepriseDAO.getAll()
         val testGetAllCacheRequeteEntreprise = cacheRequeteEntrepriseDAO.getAll()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean
+    {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) : Boolean
+    {
+        if(item.title.toString() == getString(R.string.Historique))
+        {
+            val intent = Intent(applicationContext, HistoriqueActivity::class.java)
+            startActivity(intent)
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

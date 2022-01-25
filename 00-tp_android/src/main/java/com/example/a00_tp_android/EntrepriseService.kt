@@ -11,10 +11,10 @@ import javax.net.ssl.HttpsURLConnection
 
 class EntrepriseService
 {
-    private val serverUrl = "https://entreprise.data.gouv.fr"
-    private val apiUrl = "$serverUrl/api/sirene"
-    private val entrepriseUrl = "$apiUrl/v1/full_text/%s"
-    private val villeUrl = "$entrepriseUrl?code_postal=%s"
+    private val serverUrl      = "https://entreprise.data.gouv.fr"
+    private val apiUrl         = "$serverUrl/api/sirene"
+    private val entrepriseUrl  = "$apiUrl/v1/full_text/%s"
+    private val villeUrl       = "$entrepriseUrl?code_postal=%s"
     private val departementUrl = "$entrepriseUrl?departement=%s"
 
 

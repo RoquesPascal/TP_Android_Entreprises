@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">00-TP_Android</string>
+    <string name="EntrepriseAssociee">entreprise associée</string>
+    <string name="EntreprisesAssociees">entreprises associées</string>
+    <string name="Historique">Historique</string>
     <string name="RechercherUneEntrepriseParNom">Rechercher une entreprise par nom</string>
     <string name="RechercherUneEntrepriseParVilleOuDepartement">Rechercher une entreprise par ville ou par département</string>
 </resources>

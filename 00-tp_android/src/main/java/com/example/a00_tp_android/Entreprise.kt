@@ -45,6 +45,9 @@ interface EntrepriseDAO
     @Query("SELECT COUNT(*) FROM Entreprise")
     fun count() : Int
 
+    @Query("SELECT COUNT(*) FROM Entreprise WHERE siret IN (:listeSiret)")
+    fun countByPlusieursSirets(listeSiret : List<Long>) : Int
+
     @Insert
     fun insert(entreprise : Entreprise) : Long
 

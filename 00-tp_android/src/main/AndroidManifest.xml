@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name=".FormulaireEntreprise" android:exported="true"/>
+        <activity android:name=".HistoriqueDetailsActivity" android:exported="true"/>
+        <activity android:name=".HistoriqueActivity" android:exported="true"/>
+        <activity android:name=".FormulaireEntrepriseActivity" android:exported="true"/>
         <activity android:name=".EntrepriseActivity" android:exported="true"/>
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
