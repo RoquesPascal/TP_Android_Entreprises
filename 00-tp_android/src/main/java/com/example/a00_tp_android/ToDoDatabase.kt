@@ -4,9 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import java.text.*
+import java.util.*
 
 
 @Database(entities = [Entreprise::class, CacheRequete::class, CacheRequeteEntreprise::class], version = 1)
+@TypeConverters(DateConverter::class)
 abstract class TodoDatabase : RoomDatabase()
 {
     abstract fun entrepriseDAO() : EntrepriseDAO
@@ -15,6 +19,7 @@ abstract class TodoDatabase : RoomDatabase()
 
     companion object
     {
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH)
         private var INSTANCE: TodoDatabase? = null
         fun getDatabase(context: Context): TodoDatabase
         {

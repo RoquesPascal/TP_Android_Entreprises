@@ -5,18 +5,19 @@ import androidx.room.*
 import java.io.Serializable
 import java.time.format.DateTimeFormatter
 import java.util.*
+import androidx.room.TypeConverter
 
 
 @Entity
 data class CacheRequete(@PrimaryKey(autoGenerate = true) var id                 : Long? = null,
                                                          var chaineRecherchee   : String,
-                                                         var villeOuDepartement : String/*,
-                                                         var dateRequete        : Date*/
+                                                         var villeOuDepartement : String,
+                                                         var dateRequete        : Date
                                                          ) : Serializable
 {
     override fun toString() : String
     {
-        return "CacheRequete(id=$id, chaineRecherchee='$chaineRecherchee', villeOuDepartement='$villeOuDepartement')"
+        return "CacheRequete(id=$id, chaineRecherchee='$chaineRecherchee', villeOuDepartement='$villeOuDepartement', dateRequete=$dateRequete)"
     }
 }
 
@@ -36,14 +37,23 @@ interface CacheRequeteDAO
     @Query("SELECT * FROM CacheRequete WHERE chaineRecherchee LIKE :chaine AND villeOuDepartement LIKE :chaineVilleCP")
     fun getByChaineRecherchee(chaine : String, chaineVilleCP : String) : CacheRequete?
 
+    @Query("SELECT * FROM CacheRequete WHERE chaineRecherchee LIKE :chaine AND villeOuDepartement LIKE :chaineVilleCP AND dateRequete = :dateActuelle")
+    fun getByChaineRecherchee(chaine : String, chaineVilleCP : String, dateActuelle : Date) : CacheRequete?
+
+    @Query("SELECT * FROM CacheRequete ORDER BY CacheRequete.chaineRecherchee LIMIT 1 OFFSET :position")
+    fun getByPosition(position : Int): CacheRequete
+
     @Query("SELECT CRE.siret FROM CacheRequete AS CR JOIN CacheRequeteEntreprise AS CRE ON CR.id = CRE.idRecherche WHERE CR.chaineRecherchee LIKE :chaine")
     fun getByRecherche(chaine : String) : List<Long>
 
     @Query("SELECT CRE.siret FROM CacheRequete AS CR JOIN CacheRequeteEntreprise AS CRE ON CR.id = CRE.idRecherche WHERE CR.chaineRecherchee LIKE :chaine AND CR.villeOuDepartement LIKE :chaineVilleCP")
     fun getByRecherche(chaine : String, chaineVilleCP : String) : List<Long>
 
-    @Query("SELECT * FROM CacheRequete ORDER BY CacheRequete.chaineRecherchee LIMIT 1 OFFSET :position")
-    fun getByPosition(position : Int): CacheRequete
+    @Query("SELECT CRE.siret FROM CacheRequete AS CR JOIN CacheRequeteEntreprise AS CRE ON CR.id = CRE.idRecherche WHERE CR.chaineRecherchee LIKE :chaine AND CR.villeOuDepartement LIKE :chaineVilleCP AND CR.dateRequete = :dateActuelle")
+    fun getByRecherche(chaine : String, chaineVilleCP : String, dateActuelle : Date) : List<Long>
+
+    @Query("SELECT CRE.siret FROM CacheRequete AS CR JOIN CacheRequeteEntreprise AS CRE ON CR.id = CRE.idRecherche WHERE CRE.idRecherche = :idCache")
+    fun getByRecherche(idCache : Long) : List<Long>
 
     @Query("SELECT COUNT(*) FROM CacheRequete")
     fun count() : Int

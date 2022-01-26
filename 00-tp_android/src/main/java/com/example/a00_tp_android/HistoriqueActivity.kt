@@ -45,8 +45,10 @@ class HistoriqueActivity : AppCompatActivity()
 
 class CacheRequeteViewHolder(row : View) : RecyclerView.ViewHolder(row)
 {
-    val texteCacheRequete  : TextView = row.findViewById(R.id.TextViewHistorique)
-    val nombreCacheRequete : TextView = row.findViewById(R.id.TextViewHistoriqueNombre)
+    val texteCacheRequete            : TextView = row.findViewById(R.id.TextViewHistoriqueEntreprise)
+    val nombreCacheRequete           : TextView = row.findViewById(R.id.TextViewHistoriqueNombre)
+    val dateCacheRequete             : TextView = row.findViewById(R.id.TextViewHistoriqueDate)
+    val villeDepartementCacheRequete : TextView = row.findViewById(R.id.TextViewHistoriqueVilleDepartement)
 }
 
 
@@ -72,7 +74,8 @@ class CacheRequeteAdapter(private val context         : Context,
 
         holder.texteCacheRequete.text = cacheRequete.chaineRecherchee
         holder.nombreCacheRequete.text = (nombreEntreprisesAssociees.toString() + " " + context.getString(if(nombreEntreprisesAssociees <= 1) R.string.EntrepriseAssociee else R.string.EntreprisesAssociees))
-
+        holder.dateCacheRequete.text = cacheRequete.dateRequete.toString()
+        holder.villeDepartementCacheRequete.text = cacheRequete.villeOuDepartement
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, HistoriqueDetailsActivity::class.java)
