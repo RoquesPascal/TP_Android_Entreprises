@@ -40,7 +40,7 @@ interface CacheRequeteDAO
     @Query("SELECT * FROM CacheRequete WHERE chaineRecherchee LIKE :chaine AND villeOuDepartement LIKE :chaineVilleCP AND dateRequete = :dateActuelle")
     fun getByChaineRecherchee(chaine : String, chaineVilleCP : String, dateActuelle : Date) : CacheRequete?
 
-    @Query("SELECT * FROM CacheRequete ORDER BY CacheRequete.chaineRecherchee LIMIT 1 OFFSET :position")
+    @Query("SELECT * FROM CacheRequete ORDER BY dateRequete DESC, chaineRecherchee ASC LIMIT 1 OFFSET :position")
     fun getByPosition(position : Int): CacheRequete
 
     @Query("SELECT CRE.siret FROM CacheRequete AS CR JOIN CacheRequeteEntreprise AS CRE ON CR.id = CRE.idRecherche WHERE CR.chaineRecherchee LIKE :chaine")
@@ -57,6 +57,9 @@ interface CacheRequeteDAO
 
     @Query("SELECT COUNT(*) FROM CacheRequete")
     fun count() : Int
+
+    @Query("DELETE FROM CacheRequete WHERE dateRequete < :dateSuppression")
+    fun deleteDelaisDe3Mois(dateSuppression : Date)
 
     @Insert
     fun insert(cacheRequete : CacheRequete) : Long

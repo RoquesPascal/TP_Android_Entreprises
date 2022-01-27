@@ -10,10 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.a00_tp_android.TodoDatabase.Companion.sdf
 import java.sql.Date
 import java.sql.Timestamp
+import java.util.ArrayList
 
 
 class FormulaireEntrepriseActivity : AppCompatActivity()
 {
+    private val MESDONNES_KEY = "mesDonnees"
+    private var mesDonnees : ArrayList<String>? = null
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -29,12 +33,19 @@ class FormulaireEntrepriseActivity : AppCompatActivity()
         val cacheRequeteDAO = db.cacheRequeteDAO()
         val cacheRequeteEntrepriseDAO = db.cacheRequeteEntrepriseDAO()
 
-        findViewById<ImageButton>(R.id.buttonQuery).setOnClickListener {
-            val queryNom = findViewById<EditText>(R.id.editQuery).text.toString()
-            var queryVilleDepartement : String = ""
-            if(!rechercheParNomUniquement) queryVilleDepartement = findViewById<EditText>(R.id.editQueryVilleDepartement).text.toString()
+        var queryNom : String = ""
+        var queryVilleDepartement : String = ""
 
-            if(queryNom.isEmpty()) return@setOnClickListener
+        findViewById<ImageButton>(R.id.buttonQuery).setOnClickListener {
+            queryNom = findViewById<EditText>(R.id.editQuery).text.toString()
+            if(!rechercheParNomUniquement) queryVilleDepartement = findViewById<EditText>(R.id.editQueryVilleDepartement).text.toString()
+            mesDonnees =
+                if (savedInstanceState != null && savedInstanceState.containsKey(MESDONNES_KEY)) savedInstanceState.getStringArrayList(MESDONNES_KEY)
+                else  ArrayList()
+            mesDonnees!!.add(queryNom)
+            mesDonnees!!.add(queryVilleDepartement)
+
+            if(mesDonnees!![0].isEmpty()) return@setOnClickListener
             val progressBar = findViewById<ProgressBar>(R.id.queryProgressBar)
             Thread(Runnable {
                 runOnUiThread {
@@ -44,11 +55,11 @@ class FormulaireEntrepriseActivity : AppCompatActivity()
 
                 val jourActuel = Timestamp(System.currentTimeMillis())
                 var listeEntreprise : List<Entreprise>? = null
-                var idCache = ChercherCacheRecherche(cacheRequeteDAO, queryNom, queryVilleDepartement, jourActuel)
+                var idCache = ChercherCacheRecherche(cacheRequeteDAO, mesDonnees!![0], mesDonnees!![1], jourActuel)
                 if(idCache == null)
                 {
-                    idCache = CreerCacheRecherche(cacheRequeteDAO, queryNom, queryVilleDepartement, jourActuel)
-                    listeEntreprise = entrepriseService.getEntreprise(queryNom, queryVilleDepartement)
+                    idCache = CreerCacheRecherche(cacheRequeteDAO, mesDonnees!![0], mesDonnees!![1], jourActuel)
+                    listeEntreprise = entrepriseService.getEntreprise(mesDonnees!![0], mesDonnees!![1])
                 }
                 else
                 {
@@ -80,7 +91,6 @@ class FormulaireEntrepriseActivity : AppCompatActivity()
     {
         val jourActuelPourLaBDD = sdf.parse(android.text.format.DateFormat.format("dd", (jourActuel.time)) as String + "/" + android.text.format.DateFormat.format("MM", (jourActuel.time)) as String + "/" + android.text.format.DateFormat.format("yyyy", (jourActuel.time)) as String)
         val cache = cacheRequeteDAO.getByChaineRecherchee(query, queryVilleDepartement, jourActuelPourLaBDD!!)
-        val testGetAllCacheRequete = cacheRequeteDAO.getAll()
         return cache?.id
     }
 
@@ -89,7 +99,6 @@ class FormulaireEntrepriseActivity : AppCompatActivity()
         val jourActuelPourLaBDD = sdf.parse(android.text.format.DateFormat.format("dd", (jourActuel.time)) as String + "/" + android.text.format.DateFormat.format("MM", (jourActuel.time)) as String + "/" + android.text.format.DateFormat.format("yyyy", (jourActuel.time)) as String)
         cacheRequeteDAO.insert(CacheRequete(null, query, queryVilleDepartement, jourActuelPourLaBDD!!))
         val cache = cacheRequeteDAO.getByChaineRecherchee(query, queryVilleDepartement, jourActuelPourLaBDD)
-        val testGetAllCacheRequete = cacheRequeteDAO.getAll()
         return cache!!.id!!
     }
 
@@ -101,9 +110,12 @@ class FormulaireEntrepriseActivity : AppCompatActivity()
             if(entrepriseDAO.getBySiret(entreprise.siret) == null) entrepriseDAO.insert(entreprise)
             if(rechercheNExistePas) cacheRequeteEntrepriseDAO.insert(CacheRequeteEntreprise(null, idCacheRecherche, entreprise.siret!!))
         }
+    }
 
-        val testGetAllEntreprise = entrepriseDAO.getAll()
-        val testGetAllCacheRequeteEntreprise = cacheRequeteEntrepriseDAO.getAll()
+    override fun onSaveInstanceState(outState: Bundle)
+    {
+        super.onSaveInstanceState(outState)
+        outState.putStringArrayList(MESDONNES_KEY, mesDonnees)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean
