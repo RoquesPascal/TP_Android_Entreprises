@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
 
 
 class HistoriqueActivity : AppCompatActivity()
@@ -74,7 +75,14 @@ class CacheRequeteAdapter(private val context         : Context,
 
         holder.texteCacheRequete.text = cacheRequete.chaineRecherchee
         holder.nombreCacheRequete.text = (nombreEntreprisesAssociees.toString() + " " + context.getString(if(nombreEntreprisesAssociees <= 1) R.string.EntrepriseAssociee else R.string.EntreprisesAssociees))
-        holder.dateCacheRequete.text = cacheRequete.dateRequete.toString()
+
+
+        //holder.dateCacheRequete.text = TodoDatabase.sdf.format(android.text.format.DateFormat.format("dd", (cacheRequete.dateRequete.time)) as String + "/" + android.text.format.DateFormat.format("MM", (cacheRequete.dateRequete.time)) as String + "/" + android.text.format.DateFormat.format("yyyy", (cacheRequete.dateRequete.time)) as String).toString()
+        holder.dateCacheRequete.text = SimpleDateFormat("dd/MM/yyy").format(cacheRequete.dateRequete).toString()
+        //holder.dateCacheRequete.text = cacheRequete.dateRequete.toString()
+
+
+
         holder.villeDepartementCacheRequete.text = cacheRequete.villeOuDepartement
 
         holder.itemView.setOnClickListener {
