@@ -73,9 +73,9 @@ class CacheRequeteAdapter(private val context         : Context,
         val listeSiret = cacheRequeteEntrepriseDAO.getByIdCacheRequete(cacheRequete.id!!)
         val nombreEntreprisesAssociees = entrepriseDAO.countByPlusieursSirets(listeSiret)
 
-        holder.texteCacheRequete.text = cacheRequete.chaineRecherchee
-        holder.nombreCacheRequete.text = (nombreEntreprisesAssociees.toString() + " " + context.getString(if(nombreEntreprisesAssociees <= 1) R.string.EntrepriseAssociee else R.string.EntreprisesAssociees))
-        holder.dateCacheRequete.text = SimpleDateFormat("dd/MM/yyy").format(cacheRequete.dateRequete).toString()
+        holder.texteCacheRequete.text            = cacheRequete.chaineRecherchee
+        holder.nombreCacheRequete.text           = (nombreEntreprisesAssociees.toString() + " " + context.getString(if(nombreEntreprisesAssociees <= 1) R.string.EntrepriseAssociee else R.string.EntreprisesAssociees))
+        holder.dateCacheRequete.text             = SimpleDateFormat("dd/MM/yyy").format(cacheRequete.dateRequete).toString()
         holder.villeDepartementCacheRequete.text = cacheRequete.villeOuDepartement
 
         holder.itemView.setOnClickListener {
