@@ -34,7 +34,7 @@ class EntrepriseActivity : AppCompatActivity()
                 progressBar.visibility = View.VISIBLE
                 val db = TodoDatabase.getDatabase(this)
                 val entrepriseDAO = db.entrepriseDAO()
-                val entrepriseDeLaBase = entrepriseDAO.getBySiret(mesDonnees!![0].toLong())
+                val entrepriseDeLaBase = entrepriseDAO.getBySiret(mesDonnees!![0].toLongOrNull())
                 findViewById<TextView>(R.id.TextViewEntrepriseNom)     .setText(entrepriseDeLaBase?.raisonSociale)
                 findViewById<TextView>(R.id.TextViewSiret)             .setText(entrepriseDeLaBase?.siret.toString())
                 findViewById<TextView>(R.id.TextViewAdresse)           .setText(entrepriseDeLaBase?.adresse)
