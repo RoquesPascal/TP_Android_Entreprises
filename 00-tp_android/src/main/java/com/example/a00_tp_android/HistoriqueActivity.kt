@@ -34,9 +34,9 @@ class HistoriqueActivity : AppCompatActivity()
 
     override fun onOptionsItemSelected(item: MenuItem) : Boolean
     {
-        if(item.title.toString() == getString(R.string.Historique))
+        if(item.title.toString() == getString(R.string.RechercherUneEntreprise))
         {
-            val intent = Intent(applicationContext, HistoriqueActivity::class.java)
+            val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)

@@ -66,6 +66,11 @@ class EntrepriseActivity : AppCompatActivity()
             val intent = Intent(applicationContext, HistoriqueActivity::class.java)
             startActivity(intent)
         }
+        else if(item.title.toString() == getString(R.string.RechercherUneEntreprise))
+        {
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
+        }
         return super.onOptionsItemSelected(item)
     }
 }

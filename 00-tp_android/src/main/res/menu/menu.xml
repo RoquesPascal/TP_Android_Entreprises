@@ -4,4 +4,7 @@
     <item
         android:id="@+id/MenuVoirHistorique"
         android:title="@string/Historique" />
+    <item
+        android:id="@+id/MenuRechercherEntreprise"
+        android:title="@string/RechercherUneEntreprise" />
 </menu>
