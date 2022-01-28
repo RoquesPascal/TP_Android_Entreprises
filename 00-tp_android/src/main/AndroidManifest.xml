@@ -12,11 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name=".HistoriqueDetailsActivity" android:exported="true"/>
-        <activity android:name=".HistoriqueActivity" android:exported="true"/>
-        <activity android:name=".FormulaireEntrepriseActivity" android:exported="true"/>
-        <activity android:name=".EntrepriseActivity" android:exported="true"/>
-        <activity android:name=".MainActivity" android:exported="true">
+        <activity android:name=".HistoriqueDetailsActivity" android:exported="true" android:label="@string/LabelMenuHistorique"/>
+        <activity android:name=".HistoriqueActivity" android:exported="true" android:label="@string/LabelMenuHistorique"/>
+        <activity android:name=".FormulaireEntrepriseActivity" android:exported="true" android:label="@string/LabelMenuEntrepriseRecherche"/>
+        <activity android:name=".EntrepriseActivity" android:exported="true" android:label="@string/LabelMenuEntrepriseAffichage"/>
+        <activity android:name=".MainActivity" android:exported="true" android:label="@string/LabelMenuPrincipal">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

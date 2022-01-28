@@ -3,6 +3,10 @@
     <string name="EntrepriseAssociee">entreprise associée</string>
     <string name="EntreprisesAssociees">entreprises associées</string>
     <string name="Historique">Historique</string>
+    <string name="LabelMenuPrincipal">Recherche d\'entreprise</string>
+    <string name="LabelMenuHistorique">Historique</string>
+    <string name="LabelMenuEntrepriseAffichage">Détails de l\'entreprise</string>
+    <string name="LabelMenuEntrepriseRecherche">Recherche d\'entreprise</string>
     <string name="RechercherUneEntreprise">Rechercher une entreprise</string>
     <string name="RechercherUneEntrepriseParNom">Rechercher une entreprise par nom</string>
     <string name="RechercherUneEntrepriseParVilleOuDepartement">Rechercher une entreprise par ville ou par département</string>
